@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.Random;
@@ -21,6 +23,7 @@ public class MainActivity extends ListActivity {
         List<Comment> values = dataSource.getAllComments();
         ArrayAdapter<Comment> adapter = new ArrayAdapter<Comment>(this,android.R.layout.simple_list_item_1,values);
         setListAdapter(adapter);
+
     }
     public void onClick(View view){
         ArrayAdapter<Comment> adapter = (ArrayAdapter<Comment>)getListAdapter();
@@ -41,6 +44,16 @@ public class MainActivity extends ListActivity {
                 break;
         }
         adapter.notifyDataSetChanged();
+    }
+    @Override
+    protected void onListItemClick(ListView parent, View view, int position, long id){
+        super.onListItemClick(parent,view,position,id);
+        ArrayAdapter<Comment> adapter = (ArrayAdapter<Comment>)getListAdapter();
+        Comment comment = null;
+        comment = (Comment)getListAdapter().getItem(position);
+        dataSource.deleteComment(comment);
+        adapter.remove(comment);
+
     }
     @Override
     protected void onResume(){
